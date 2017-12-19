@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="统计学习方法," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="感知机(perceptron)是二类分类的线性分类模型，输入为实例的特征下ing量，输出为实例的类别，只有+1和-1二值。旨在求出将训练数据进行线性划分的分离超平面。 感知机模型定义：假设输入空间是$\mathcal{X}\subseteq R^n$，输出空间是$\mathcal{Y}={+1,-1}$.由输入空间到输出空间的如下函数: $$f(x) = sign(w\cdot x + b)$$">
+<meta name="keywords" content="统计学习方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="感知机">
+<meta property="og:url" content="http://yoursite.com/2017/12/19/2017-12-19-perception/index.html">
+<meta property="og:site_name" content="嘿喵喵喵喵">
+<meta property="og:description" content="感知机(perceptron)是二类分类的线性分类模型，输入为实例的特征下ing量，输出为实例的类别，只有+1和-1二值。旨在求出将训练数据进行线性划分的分离超平面。 感知机模型定义：假设输入空间是$\mathcal{X}\subseteq R^n$，输出空间是$\mathcal{Y}={+1,-1}$.由输入空间到输出空间的如下函数: $$f(x) = sign(w\cdot x + b)$$">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1513517234/1513517211344_qds965.jpg">
+<meta property="og:updated_time" content="2017-12-19T03:41:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="感知机">
+<meta name="twitter:description" content="感知机(perceptron)是二类分类的线性分类模型，输入为实例的特征下ing量，输出为实例的类别，只有+1和-1二值。旨在求出将训练数据进行线性划分的分离超平面。 感知机模型定义：假设输入空间是$\mathcal{X}\subseteq R^n$，输出空间是$\mathcal{Y}={+1,-1}$.由输入空间到输出空间的如下函数: $$f(x) = sign(w\cdot x + b)$$">
+<meta name="twitter:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1513517234/1513517211344_qds965.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/19/2017-12-19-perception/"/>
+
+
+
+
+
+  <title>感知机 | 嘿喵喵喵喵</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">嘿喵喵喵喵</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/19/2017-12-19-perception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘿喵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="嘿喵喵喵喵">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">感知机</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T11:32:48+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>感知机(perceptron)是二类分类的线性分类模型，输入为实例的特征下ing量，输出为实例的类别，只有+1和-1二值。旨在求出将训练数据进行线性划分的分离超平面。</p>
+<h2 id="感知机模型"><a href="#感知机模型" class="headerlink" title="感知机模型"></a>感知机模型</h2><p>定义：假设输入空间是$\mathcal{X}\subseteq R^n$，输出空间是$\mathcal{Y}={+1,-1}$.由输入空间到输出空间的如下函数:</p>
+<p>$$<br>f(x) = sign(w\cdot x + b)<br>$$</p>
+<p>即为感知机，w叫做权值(weight)，b叫做偏置(bias),sign为符号函数，即：</p>
+<p>$$<br>sign(x) = \begin{cases} \\<br>+1,x\ge0 \\<br>-1,x\le0 \\<br>\end{cases}<br>$$</p>
+<p>感知机的几何解释为：线性方程$w\cdot x+b=0$对应于特征空间$R^n$的一个超平面S，w是超平面的法向量，b是超平面的截距。超平面将特征空间划分为两个部分，这两部分的点分别称为正、负两类。超平面S也称为分离超平面(separating hyperplane).</p>
+<a id="more"></a>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1513517234/1513517211344_qds965.jpg" alt="分离超平面"></p>
+<h2 id="感知机学习策略"><a href="#感知机学习策略" class="headerlink" title="感知机学习策略"></a>感知机学习策略</h2><h3 id="数据集的线性可分性"><a href="#数据集的线性可分性" class="headerlink" title="数据集的线性可分性"></a>数据集的线性可分性</h3><p>如果存在一个超平面，能够将数据集的正实例点和负实例点完全正确地划分到超平面的两侧，即对于$y_i=+1$的实例i，有$w\cdot x_i+b &gt; 0$,对所有$y_i=-1$的实例i，有$w\cdot x_i + b &lt; 0$，则称数据集T为线性可分数据集(linearly separable data set);否则，则称为数据集T线性不可分。</p>
+<h3 id="感知机学习策略-1"><a href="#感知机学习策略-1" class="headerlink" title="感知机学习策略"></a>感知机学习策略</h3><p>如果训练集是线性可分的，感知机的学习目标就是求得能够将训练集数据完全正确区分的分离超平面。</p>
+<p>感知机的损失函数是误分类点到超平面S的总距离，即:</p>
+<p>$$<br>L(w,b) = -\sum_{x_i\in M}y_i(w\cdot x_i + b)<br>$$</p>
+<p>此损失函数即为感知机学习的经验风险函数。</p>
+<p>感知机的学习策略就是在假设空间中选取损失函数最小的模型参数w,b.</p>
+<h2 id="感知机学习算法"><a href="#感知机学习算法" class="headerlink" title="感知机学习算法"></a>感知机学习算法</h2><p>感知机的学习问题实际上就是损失函数的最优化问题，最优化的方法时随机梯度下降法。具体算法有原始形式和对偶形式。</p>
+<h3 id="感知机学习算法的原始形式"><a href="#感知机学习算法的原始形式" class="headerlink" title="感知机学习算法的原始形式"></a>感知机学习算法的原始形式</h3><p>使用随机梯度下降法(stochastic gradient descent)来极小化损失函数。</p>
+<p>首先任意选取一个超平面$w_0, b_0$，然后用梯度下降法不断地极小化损失函数。在极小化过程中，每次都会随机选取一个误分类点来使其梯度下降。</p>
+<p>假设误分类点集合M是固定的，则损失函数L(w,b)的梯度由:</p>
+<p>$$<br>\triangledown<em>wL(w,b) = -\sum</em>{x_i\in M}y_ix_i \\<br>\triangledown<em>bL(w,b) = -\sum</em>{x_i\in M}yi<br>$$<br>给出</p>
+<p>随机选取一个误分类点<code>$(x_i, y_i)$</code>对w，b进行更新:</p>
+<p>$$<br>w \leftarrow w + \eta y_ix_i \\<br>b \leftarrow b + \eta y_i<br>$$</p>
+<p>式中$\eta(0 &lt;\eta\le1)$是步长，又称为学习率。</p>
+<hr>
+<p>具体算法为：</p>
+<p>输入：训练集$T={(x_1,y_1),\cdots,(x_N,y_N)}$, 其中$x_i \in \mathcal{X} = R^n,\;y_i \in \mathcal{Y}={-1,+1},i=1,2,\cdots,N$,学习率$0&lt;\eta\le1$</p>
+<p>输出：w，b;感知机模型$f(x)=sign(w\cdot x + b)$</p>
+<ol>
+<li>选取初值$w_0, b_0$</li>
+<li>在训练集中选取数据$(x_i, y_i)$</li>
+<li>如果$y_i(w\cdot x_i + b)\le0$</li>
+</ol>
+<p>$$<br>w \leftarrow w +\eta y_ix_i \\<br>b \leftarrow b +\eta y_i<br>$$</p>
+<ol>
+<li>转至2，知道没有误分类点。</li>
+</ol>
+<hr>
+<p>对该算法的解释：当实例点被误分类，即位于分离超平面的错误一侧时，调整w,b的值，使分离超平面向误分类点的一侧移动，减少该点与超平面间的距离。</p>
+<p><strong>感知机学习算法在选取不同初值或者不同误分类点时，得出的解不同</strong></p>
+<h3 id="算法的收敛性"><a href="#算法的收敛性" class="headerlink" title="算法的收敛性"></a>算法的收敛性</h3><p>线性可分数据集感知机学习算法原始形式收敛指的是经过有限次的迭代后可以得到一个完全将数据正确划分的分离超平面以及感知机模型。</p>
+<p>设$\hat{w}=(w^T,b)^T,\hat{x}=(x^T, 1)^T$，则有$\hat{w}\cdot\hat{x}=w\cdot x + b$</p>
+<p>设训练集$T={(x_1, y_1),\cdots,(x_N, y_N)}$是线性可分的，其中$x_i \in \mathcal{X} = R^n,\;y_i \in \mathcal{Y}={-1,+1},i=1,2,\cdots,N$，那么</p>
+<ol>
+<li>存在满足条件$||\hat{w}<em>{opt}||=1$的超平面$\hat{w}</em>{opt}\cdot\hat{x}+b_{opt}=0$将训练数据集完全正确分开，且存在$\gamma&gt;0$,对所有i=1,2,…,N</li>
+</ol>
+<p>$$<br>y<em>i(\hat{w}</em>{opt}\cdot\hat{x}_i )=y<em>i(w</em>{opt}\cdot x<em>i+ b</em>{opt})\ge \gamma<br>$$</p>
+<ol>
+<li>令$R=max_{1\le i\le N}||\hat{x}_i||$,则训练集的误分类次数K满足：</li>
+</ol>
+<p>$$<br>k\le(\frac{R}{\gamma})^2<br>$$</p>
+<p>感知机的算法得到的解既依赖于初值的选择，也依赖于误分类点的选择顺序，如果要得到唯一的超平面的话，需要对分离超平面添加约束条件。</p>
+<h3 id="感知学习算法的对偶形式"><a href="#感知学习算法的对偶形式" class="headerlink" title="感知学习算法的对偶形式"></a>感知学习算法的对偶形式</h3><p>对偶形式的基本想法是将w和b表示为实例$x_i$和标记$y_i$的线性组合。在原始形式中:</p>
+<p>$$<br>w \leftarrow w + \eta y_ix_i \\<br>b \leftarrow b + \eta y_i<br>$$</p>
+<p>如果对w和b修改n此的话，则最后w和b关于$(x_i, y_i)$的增量分别是$\alpha_iy_ix_i$和$\alpha_iy_i$.这里$\alpha_i=n_i\eta$,则到最后w和b分别为:</p>
+<p>$$<br>w = \sum_{i=1}^N\alpha_iy_ix<em>i \\<br>b=\sum</em>{i=1}^N\alpha_iy_i<br>$$</p>
+<hr>
+<p>感知机学习算法的对偶形式</p>
+<p>输入：线性可分的数据集$T={(x_1,y_1),\cdots,(x_N,y_N)}$,其中$x_i\in R^n,y_i\in{-1, +1}, i=1,\cdots,N$;学习率$\eta (0 &lt; \eta \le 1)$</p>
+<p>输出：$\alpha, b;$ 感知机模型$f(x)=sign(\sum_{j=1}^N\alpha_jy_jx_j\cdot x +b)$</p>
+<ol>
+<li>$\alpha \leftarrow 0, b\leftarrow 0$</li>
+<li>在训练集中选取数据$(x_i, y_i)$</li>
+<li>如果$y_i(\sum_{j=1}^N\alpha_jy_jx_j+b)\le 0$<br>$$<br>\alpha_i \leftarrow \alpha_i+\eta \\<br>b \leftarrow b +\eta y_i<br>$$ </li>
+<li>转至2直到没有误分类数据</li>
+</ol>
+<hr>
+<p>对偶形式算法中，实例仅以内积形式出现，所以可以先将实例的内积计算出来用矩阵存储，即Gram矩阵:</p>
+<p>$$<br>G=[x_i\cdot x_j]_{N\times N}<br>$$</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/统计学习方法/" rel="tag"># 统计学习方法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/17/2017-12-08-Introduction-to-Statistical-Learning-Method/" rel="next" title="统计学习方法概论">
+                <i class="fa fa-chevron-left"></i> 统计学习方法概论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">嘿喵</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#感知机模型"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x611F;&#x77E5;&#x673A;&#x6A21;&#x578B;" class="headerlink" title="&#x611F;&#x77E5;&#x673A;&#x6A21;&#x578B;"></a>&#x611F;&#x77E5;&#x673A;&#x6A21;&#x578B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感知机学习策略"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B56;&#x7565;" class="headerlink" title="&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B56;&#x7565;"></a>&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B56;&#x7565;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集的线性可分性"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x96C6;&#x7684;&#x7EBF;&#x6027;&#x53EF;&#x5206;&#x6027;" class="headerlink" title="&#x6570;&#x636E;&#x96C6;&#x7684;&#x7EBF;&#x6027;&#x53EF;&#x5206;&#x6027;"></a>&#x6570;&#x636E;&#x96C6;&#x7684;&#x7EBF;&#x6027;&#x53EF;&#x5206;&#x6027;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感知机学习策略-1"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B56;&#x7565;-1" class="headerlink" title="&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B56;&#x7565;"></a>&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B56;&#x7565;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感知机学习算法"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;" class="headerlink" title="&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;"></a>&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#感知机学习算法的原始形式"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x7684;&#x539F;&#x59CB;&#x5F62;&#x5F0F;" class="headerlink" title="&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x7684;&#x539F;&#x59CB;&#x5F62;&#x5F0F;"></a>&#x611F;&#x77E5;&#x673A;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x7684;&#x539F;&#x59CB;&#x5F62;&#x5F0F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法的收敛性"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x7B97;&#x6CD5;&#x7684;&#x6536;&#x655B;&#x6027;" class="headerlink" title="&#x7B97;&#x6CD5;&#x7684;&#x6536;&#x655B;&#x6027;"></a>&#x7B97;&#x6CD5;&#x7684;&#x6536;&#x655B;&#x6027;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感知学习算法的对偶形式"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#&#x611F;&#x77E5;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x7684;&#x5BF9;&#x5076;&#x5F62;&#x5F0F;" class="headerlink" title="&#x611F;&#x77E5;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x7684;&#x5BF9;&#x5076;&#x5F62;&#x5F0F;"></a>&#x611F;&#x77E5;&#x5B66;&#x4E60;&#x7B97;&#x6CD5;&#x7684;&#x5BF9;&#x5076;&#x5F62;&#x5F0F;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘿喵</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
