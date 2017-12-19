@@ -88,7 +88,7 @@
 <meta property="og:description" content="感知机(perceptron)是二类分类的线性分类模型，输入为实例的特征下ing量，输出为实例的类别，只有+1和-1二值。旨在求出将训练数据进行线性划分的分离超平面。 感知机模型定义：假设输入空间是$\mathcal{X}\subseteq R^n$，输出空间是$\mathcal{Y}={+1,-1}$.由输入空间到输出空间的如下函数: $$f(x) = sign(w\cdot x + b)$$">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1513517234/1513517211344_qds965.jpg">
-<meta property="og:updated_time" content="2017-12-19T03:41:00.000Z">
+<meta property="og:updated_time" content="2017-12-19T03:50:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="感知机">
 <meta name="twitter:description" content="感知机(perceptron)是二类分类的线性分类模型，输入为实例的特征下ing量，输出为实例的类别，只有+1和-1二值。旨在求出将训练数据进行线性划分的分离超平面。 感知机模型定义：假设输入空间是$\mathcal{X}\subseteq R^n$，输出空间是$\mathcal{Y}={+1,-1}$.由输入空间到输出空间的如下函数: $$f(x) = sign(w\cdot x + b)$$">
@@ -193,6 +193,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -240,7 +260,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="嘿喵">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -328,7 +348,7 @@
 <h2 id="感知机模型"><a href="#感知机模型" class="headerlink" title="感知机模型"></a>感知机模型</h2><p>定义：假设输入空间是$\mathcal{X}\subseteq R^n$，输出空间是$\mathcal{Y}={+1,-1}$.由输入空间到输出空间的如下函数:</p>
 <p>$$<br>f(x) = sign(w\cdot x + b)<br>$$</p>
 <p>即为感知机，w叫做权值(weight)，b叫做偏置(bias),sign为符号函数，即：</p>
-<p>$$<br>sign(x) = \begin{cases} \\<br>+1,x\ge0 \\<br>-1,x\le0 \\<br>\end{cases}<br>$$</p>
+<p>$$<br>sign(x) = \begin{cases}<br>+1,x\ge0 \\<br>-1,x\le0 \\<br>\end{cases}<br>$$</p>
 <p>感知机的几何解释为：线性方程$w\cdot x+b=0$对应于特征空间$R^n$的一个超平面S，w是超平面的法向量，b是超平面的截距。超平面将特征空间划分为两个部分，这两部分的点分别称为正、负两类。超平面S也称为分离超平面(separating hyperplane).</p>
 <a id="more"></a>
 <p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1513517234/1513517211344_qds965.jpg" alt="分离超平面"></p>
@@ -342,8 +362,8 @@
 <h3 id="感知机学习算法的原始形式"><a href="#感知机学习算法的原始形式" class="headerlink" title="感知机学习算法的原始形式"></a>感知机学习算法的原始形式</h3><p>使用随机梯度下降法(stochastic gradient descent)来极小化损失函数。</p>
 <p>首先任意选取一个超平面$w_0, b_0$，然后用梯度下降法不断地极小化损失函数。在极小化过程中，每次都会随机选取一个误分类点来使其梯度下降。</p>
 <p>假设误分类点集合M是固定的，则损失函数L(w,b)的梯度由:</p>
-<p>$$<br>\triangledown<em>wL(w,b) = -\sum</em>{x_i\in M}y_ix_i \\<br>\triangledown<em>bL(w,b) = -\sum</em>{x_i\in M}yi<br>$$<br>给出</p>
-<p>随机选取一个误分类点<code>$(x_i, y_i)$</code>对w，b进行更新:</p>
+<p>$$<br>\triangledown_wL(w,b) = -\sum_{x_i\in M}y_ix_i \\<br>\triangledown_bL(w,b) = -\sum_{x_i\in M}y_i<br>$$<br>给出</p>
+<p>随机选取一个误分类点$(x_i, y_i)$对w，b进行更新:</p>
 <p>$$<br>w \leftarrow w + \eta y_ix_i \\<br>b \leftarrow b + \eta y_i<br>$$</p>
 <p>式中$\eta(0 &lt;\eta\le1)$是步长，又称为学习率。</p>
 <hr>
@@ -366,9 +386,9 @@
 <p>设$\hat{w}=(w^T,b)^T,\hat{x}=(x^T, 1)^T$，则有$\hat{w}\cdot\hat{x}=w\cdot x + b$</p>
 <p>设训练集$T={(x_1, y_1),\cdots,(x_N, y_N)}$是线性可分的，其中$x_i \in \mathcal{X} = R^n,\;y_i \in \mathcal{Y}={-1,+1},i=1,2,\cdots,N$，那么</p>
 <ol>
-<li>存在满足条件$||\hat{w}<em>{opt}||=1$的超平面$\hat{w}</em>{opt}\cdot\hat{x}+b_{opt}=0$将训练数据集完全正确分开，且存在$\gamma&gt;0$,对所有i=1,2,…,N</li>
+<li>存在满足条件$||\hat{w}_{opt}||=1$的超平面$\hat{w}_{opt}\cdot\hat{x}+b_{opt}=0$将训练数据集完全正确分开，且存在$\gamma&gt;0$,对所有i=1,2,…,N</li>
 </ol>
-<p>$$<br>y<em>i(\hat{w}</em>{opt}\cdot\hat{x}_i )=y<em>i(w</em>{opt}\cdot x<em>i+ b</em>{opt})\ge \gamma<br>$$</p>
+<p>$$<br>y_i(\hat{w}_{opt}\cdot\hat{x}_i )=y_i(w_{opt}\cdot x_i+ b_{opt})\ge \gamma<br>$$</p>
 <ol>
 <li>令$R=max_{1\le i\le N}||\hat{x}_i||$,则训练集的误分类次数K满足：</li>
 </ol>
@@ -377,7 +397,7 @@
 <h3 id="感知学习算法的对偶形式"><a href="#感知学习算法的对偶形式" class="headerlink" title="感知学习算法的对偶形式"></a>感知学习算法的对偶形式</h3><p>对偶形式的基本想法是将w和b表示为实例$x_i$和标记$y_i$的线性组合。在原始形式中:</p>
 <p>$$<br>w \leftarrow w + \eta y_ix_i \\<br>b \leftarrow b + \eta y_i<br>$$</p>
 <p>如果对w和b修改n此的话，则最后w和b关于$(x_i, y_i)$的增量分别是$\alpha_iy_ix_i$和$\alpha_iy_i$.这里$\alpha_i=n_i\eta$,则到最后w和b分别为:</p>
-<p>$$<br>w = \sum_{i=1}^N\alpha_iy_ix<em>i \\<br>b=\sum</em>{i=1}^N\alpha_iy_i<br>$$</p>
+<p>$$<br>w = \sum_{i=1}^N\alpha_iy_ix_i \\<br>b=\sum_{i=1}^N\alpha_iy_i<br>$$</p>
 <hr>
 <p>感知机学习算法的对偶形式</p>
 <p>输入：线性可分的数据集$T={(x_1,y_1),\cdots,(x_N,y_N)}$,其中$x_i\in R^n,y_i\in{-1, +1}, i=1,\cdots,N$;学习率$\eta (0 &lt; \eta \le 1)$</p>
@@ -493,6 +513,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="嘿喵" />
+            
               <p class="site-author-name" itemprop="name">嘿喵</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
@@ -537,6 +561,14 @@
           
 
           <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/KimJin77" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
             
           </div>
 
