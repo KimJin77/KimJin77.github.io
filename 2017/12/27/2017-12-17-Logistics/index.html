@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="嘿喵喵喵喵">
 <meta property="og:description" content="Logistic回归模型与最大熵模型都属于对数线性模型。 Logistic回归模型Logistic分布设X是连续随机变量，X服从Logistic分布是指X具有下列分布函数和密度函数： $$F(x) = P(X\le x)=\frac{1}{1+e^{-(x-\mu)/\gamma}}\f(x)=F’(x)=\frac{e^{-(x-\mu)/\gamma}}{\gamma(1+e^{-(x-\mu">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050\_tij8c1.jpg">
-<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514211329/WechatIMG54\_j6xopk.jpg">
-<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514214072/1\_flsour.png">
-<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514214074/1514214056073\_miivcn.jpg">
-<meta property="og:updated_time" content="2017-12-27T01:31:25.000Z">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050_tij8c1.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514211329/WechatIMG54_j6xopk.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514214072/1_flsour.png">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514214074/1514214056073_miivcn.jpg">
+<meta property="og:updated_time" content="2017-12-27T01:34:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Logistic回归模型与最大熵模型">
 <meta name="twitter:description" content="Logistic回归模型与最大熵模型都属于对数线性模型。 Logistic回归模型Logistic分布设X是连续随机变量，X服从Logistic分布是指X具有下列分布函数和密度函数： $$F(x) = P(X\le x)=\frac{1}{1+e^{-(x-\mu)/\gamma}}\f(x)=F’(x)=\frac{e^{-(x-\mu)/\gamma}}{\gamma(1+e^{-(x-\mu">
-<meta name="twitter:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050\_tij8c1.jpg">
+<meta name="twitter:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050_tij8c1.jpg">
 
 
 
@@ -352,7 +352,7 @@
 <p>$$<br>F(x) = P(X\le x)=\frac{1}{1+e^{-(x-\mu)/\gamma}}\<br>f(x)=F’(x)=\frac{e^{-(x-\mu)/\gamma}}{\gamma(1+e^{-(x-\mu)/\gamma})^2}<br>$$</p>
 <p>式中$\mu$为位置参数，$\gamma&gt;0$为形状参数</p>
 <p>两个函数的图像如下所示：</p>
-<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050\_tij8c1.jpg" alt=""></p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050_tij8c1.jpg" alt=""></p>
 <a id="more"></a>
 <h3 id="二项Logistic回归模型"><a href="#二项Logistic回归模型" class="headerlink" title="二项Logistic回归模型"></a>二项Logistic回归模型</h3><p>二项Logistic回归模型是如下的条件概率分布：</p>
 <p>$$<br>P(Y=1|x) = \frac{exp(w\cdot x + b)}{1 + exp(w\cdot x + b)}\<br>P(Y=0|x) = \frac{1}{1 + exp(w\cdot x + b)}<br>$$</p>
@@ -394,7 +394,7 @@
 <p>按照最优化问题，通常会将求解最大值的问题等价为求最小值的问题：</p>
 <p>$$<br>min_{P\in C} -H(P) = \sum_{x, y}\tilde{P}(x)P(y|x)logP(y|x)\<br>s.t.\qquad E_P(f_i)- E_{\tilde{P}}(f_i) = 0, i=1,2,\cdots,n\<br>\sum_yP(y|x) = 1<br>$$</p>
 <p>求解上面的最优化问题获得的解，就是最大熵模型学习的解，具体推导为：</p>
-<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514211329/WechatIMG54\_j6xopk.jpg" alt=""></p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514211329/WechatIMG54_j6xopk.jpg" alt=""></p>
 <h3 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h3><p>已知训练数据的经验概率分布$\tilde{P}(X, Y)$, 条件概率分布P(Y|X)的对数似然函数表示为:</p>
 <p>$$<br>L_{\tilde{P}}(P_w) = log\prod_{x, y}P(y|x)^{\tilde{P}(x, y)} = \sum_{x, y}\tilde{P}(x, y)logP(y|x)<br>$$</p>
 <p>当条件概率分布P(y|x)是最大熵模型时，对数似然函数$L_{\tilde{P}}(P_w)$为：</p>
@@ -411,8 +411,8 @@
 <p>$$<br>L(w) = \sum_{x,y}\tilde{P}(x,y)\sum_{i=1}^nw_if_i(x,y) - \sum_x\tilde{P}(x)logZ_w(x)<br>$$</p>
 <p>IIS的想法是:假设最大熵模型当前的参数向量是$w=(w_1,w_2,\cdots,w_n)^T$,希望找到一个新的参数向量$w+\delta=(w_1+\delta_1,w_2+\delta_2,\cdots,w_n+\delta_n)^T$能使模型的对数似然函数值增大，如果有这样一种参数向量更新方法，则就可以一直重复使用。直到找到最大值。</p>
 <p>（公式推到实在太多。。。贴图）</p>
-<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514214072/1\_flsour.png" alt=""></p>
-<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514214074/1514214056073\_miivcn.jpg" alt=""></p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514214072/1_flsour.png" alt=""></p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514214074/1514214056073_miivcn.jpg" alt=""></p>
 <hr>
 <p>IIS</p>
 <p>输入: 特征函数$f_1,f_2,\cdots,f_w$;经验分布$\tilde{P}(X, Y)$,模型$P_w(y|x)$</p>
