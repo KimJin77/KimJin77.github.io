@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="统计学习方法," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Logistic回归模型与最大熵模型都属于对数线性模型。 Logistic回归模型Logistic分布设X是连续随机变量，X服从Logistic分布是指X具有下列分布函数和密度函数： $$F(x) = P(X\le x)=\frac{1}{1+e^{-(x-\mu)/\gamma}}\f(x)=F’(x)=\frac{e^{-(x-\mu)/\gamma}}{\gamma(1+e^{-(x-\mu">
+<meta name="keywords" content="统计学习方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Logistic回归模型与最大熵模型">
+<meta property="og:url" content="http://yoursite.com/2017/12/27/2017-12-17-Logistics/index.html">
+<meta property="og:site_name" content="嘿喵喵喵喵">
+<meta property="og:description" content="Logistic回归模型与最大熵模型都属于对数线性模型。 Logistic回归模型Logistic分布设X是连续随机变量，X服从Logistic分布是指X具有下列分布函数和密度函数： $$F(x) = P(X\le x)=\frac{1}{1+e^{-(x-\mu)/\gamma}}\f(x)=F’(x)=\frac{e^{-(x-\mu)/\gamma}}{\gamma(1+e^{-(x-\mu">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050\_tij8c1.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514211329/WechatIMG54\_j6xopk.jpg">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514214072/1\_flsour.png">
+<meta property="og:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514214074/1514214056073\_miivcn.jpg">
+<meta property="og:updated_time" content="2017-12-27T01:31:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Logistic回归模型与最大熵模型">
+<meta name="twitter:description" content="Logistic回归模型与最大熵模型都属于对数线性模型。 Logistic回归模型Logistic分布设X是连续随机变量，X服从Logistic分布是指X具有下列分布函数和密度函数： $$F(x) = P(X\le x)=\frac{1}{1+e^{-(x-\mu)/\gamma}}\f(x)=F’(x)=\frac{e^{-(x-\mu)/\gamma}}{\gamma(1+e^{-(x-\mu">
+<meta name="twitter:image" content="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050\_tij8c1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/27/2017-12-17-Logistics/"/>
+
+
+
+
+
+  <title>Logistic回归模型与最大熵模型 | 嘿喵喵喵喵</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">嘿喵喵喵喵</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/27/2017-12-17-Logistics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘿喵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="嘿喵喵喵喵">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Logistic回归模型与最大熵模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T09:28:36+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Logistic回归模型与最大熵模型都属于对数线性模型。</p>
+<h2 id="Logistic回归模型"><a href="#Logistic回归模型" class="headerlink" title="Logistic回归模型"></a>Logistic回归模型</h2><h3 id="Logistic分布"><a href="#Logistic分布" class="headerlink" title="Logistic分布"></a>Logistic分布</h3><p>设X是连续随机变量，X服从Logistic分布是指X具有下列分布函数和密度函数：</p>
+<p>$$<br>F(x) = P(X\le x)=\frac{1}{1+e^{-(x-\mu)/\gamma}}\<br>f(x)=F’(x)=\frac{e^{-(x-\mu)/\gamma}}{\gamma(1+e^{-(x-\mu)/\gamma})^2}<br>$$</p>
+<p>式中$\mu$为位置参数，$\gamma&gt;0$为形状参数</p>
+<p>两个函数的图像如下所示：</p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514089952/1514089933050\_tij8c1.jpg" alt=""></p>
+<a id="more"></a>
+<h3 id="二项Logistic回归模型"><a href="#二项Logistic回归模型" class="headerlink" title="二项Logistic回归模型"></a>二项Logistic回归模型</h3><p>二项Logistic回归模型是如下的条件概率分布：</p>
+<p>$$<br>P(Y=1|x) = \frac{exp(w\cdot x + b)}{1 + exp(w\cdot x + b)}\<br>P(Y=0|x) = \frac{1}{1 + exp(w\cdot x + b)}<br>$$</p>
+<p>对于给定的输入实例x，求得条件概率分布以后，比较概率值的大小，将实例x分到概率值较大的那一类。</p>
+<p>可以将权值向量和输入向量加以扩充:$w=(w^{(1)},w^{(2)},\cdots,w^{(n)}, b)^T, x=(x^{(1)}, x^{(2)},\cdots,x^{(n)}, 1)^T$.此时，逻辑回归的模型为：</p>
+<p>$$<br>P(Y=1|x) = \frac{exp(w\cdot x)}{1 + exp(w\cdot x)}\<br>P(Y=0|x) = \frac{1}{1 + exp(w\cdot x)}<br>$$</p>
+<p>事件的几率(odds)指事件发生的概率与不发生概率的壁纸。如果事件发生概率为p，则该事件的几率是$\frac{p}{1-p}$,该事件的对数几率(log odds)或logit函数为:</p>
+<p>$$<br>logit(p) = log\frac{p}{1-p}<br>$$</p>
+<p>对逻辑回归而言则$log\frac{P(Y=1|x)}{1-P(Y=1|x)}=w\cdot x$</p>
+<h3 id="多项Logistic回归"><a href="#多项Logistic回归" class="headerlink" title="多项Logistic回归"></a>多项Logistic回归</h3><p>$$<br>P(Y=k|x) = \frac{exp(w_k\cdot x)}{1+\sum_{k=1}^{K-1}exp(w_k\cdot x)}\<br>P(Y=K|x)=\frac{1}{1+\sum_{k=1}^{K-1}exp(w_k\cdot x)}<br>$$</p>
+<h2 id="最大熵模型"><a href="#最大熵模型" class="headerlink" title="最大熵模型"></a>最大熵模型</h2><p>最大熵模型(maximum entropy model)由最大熵原理推导实现。</p>
+<h3 id="最大熵原理"><a href="#最大熵原理" class="headerlink" title="最大熵原理"></a>最大熵原理</h3><p>最大熵原理认为，学习概率模型时，在所有可能的概率模型中，熵最大的模型时最好的模型。</p>
+<p>假设离散随机变量X的概率分布是P(X)，则其熵为:</p>
+<p>$$<br>H(P) = \sum_{x}P(x)logP(x)<br>$$</p>
+<p>熵满足下列不等式:</p>
+<p>$$<br>0\le H(P)\le log|X|<br>$$</p>
+<p>当且仅当X的分布是均匀分布时右边的等号成立。即X服从均匀分布时，熵最大。</p>
+<h3 id="最大熵模型的定义"><a href="#最大熵模型的定义" class="headerlink" title="最大熵模型的定义"></a>最大熵模型的定义</h3><p>假设分类模型是一个条件概率分布P(Y|X),$X\in\mathcal{X}\subseteq R^n$表示输入，$Y\in\mathcal{Y}$表示输出。$\mathcal{X},\mathcal{Y}$分别是输入输出的集合。这个模型表示的是对于给定的输入X，以条件概率输出Y</p>
+<p>对于给定的训练集，可以确定联合分布P(X, Y)的经验分布和边缘分布P(X)的经验分布，即：</p>
+<p>$$<br>\tilde{P}(X=x,Y=y) = \frac{\nu(X=x, Y=y)}{N}\<br>\tilde{P}(X=x) = \frac{\nu(X=x)}{N}<br>$$</p>
+<p>用特征函数f(x,y)描述输入x和输出y之间的某一个事实，其定义是：</p>
+<p>$$<br>f(x, y) = \begin{cases}<br>1, \<br>0<br>\end{cases}<br>$$</p>
+<p>当x和y满足某一事实时取值为1，否则为0</p>
+<p>特征函数关于经验分布$\tilde{P}(x, y)$的期望值，用$E_{\tilde{p}}(f)$表示：</p>
+<p>$$<br>E_{\tilde{p}}(f) = \sum_{x, y}\tilde{P}(x,y)f(x,y)<br>$$</p>
+<p>特征函数关于模型P(Y|X)与经验分布$\tilde{P}(X)$的期望值，用$E_p(f)$表示</p>
+<p>$$<br>E_p(f) = \sum_{x,y}\tilde{P}(x)P(y|x)f(x,y)<br>$$</p>
+<p>如果模型能够获取训练数据的信息，则可以假设两个期望相等，即：</p>
+<p>$$<br>E_{\tilde{p}}(f) = E_p(f)\<br>\sum_{x, y}\tilde{P}(x,y)f(x,y) = \sum_{x,y}\tilde{P}(x)P(y|x)f(x,y)<br>$$</p>
+<p>上面的式子一般作为模型学习的约束条件。</p>
+<p>假设满足所有约束条件的模型集合为</p>
+<p>$$<br>\mathcal{C}\equiv{P\in\mathcal{P}|E_{\tilde{p}}(f_i) = E_p(f_i),i=1,2,\cdots,n}<br>$$</p>
+<p>定义在条件概率分布P(Y|X)上的条件熵为:</p>
+<p>$$<br>H(P) = -\sum_{x, y}\tilde{P}(x)P(y|x)logP(y|x)<br>$$</p>
+<p>使条件熵最大的模型则成为最大熵模型，式中对数为自然对数。</p>
+<h3 id="最大熵模型学习"><a href="#最大熵模型学习" class="headerlink" title="最大熵模型学习"></a>最大熵模型学习</h3><p>最大熵模型的学习可以形式化为约束最优化问题。</p>
+<p>即：</p>
+<p>$$<br>max_{P\in C} H(P) = -\sum_{x, y}\tilde{P}(x)P(y|x)logP(y|x)\<br>s.t.\qquad E_P(f_i)=E_{\tilde{P}}(f_i), i=1,2,\cdots,n\<br>\sum_yP(y|x) = 1\<br>$$</p>
+<p>按照最优化问题，通常会将求解最大值的问题等价为求最小值的问题：</p>
+<p>$$<br>min_{P\in C} -H(P) = \sum_{x, y}\tilde{P}(x)P(y|x)logP(y|x)\<br>s.t.\qquad E_P(f_i)- E_{\tilde{P}}(f_i) = 0, i=1,2,\cdots,n\<br>\sum_yP(y|x) = 1<br>$$</p>
+<p>求解上面的最优化问题获得的解，就是最大熵模型学习的解，具体推导为：</p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514211329/WechatIMG54\_j6xopk.jpg" alt=""></p>
+<h3 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h3><p>已知训练数据的经验概率分布$\tilde{P}(X, Y)$, 条件概率分布P(Y|X)的对数似然函数表示为:</p>
+<p>$$<br>L_{\tilde{P}}(P_w) = log\prod_{x, y}P(y|x)^{\tilde{P}(x, y)} = \sum_{x, y}\tilde{P}(x, y)logP(y|x)<br>$$</p>
+<p>当条件概率分布P(y|x)是最大熵模型时，对数似然函数$L_{\tilde{P}}(P_w)$为：</p>
+<p>$$<br>L_{\tilde{P}}(P_w) = \sum_{x, y}\tilde{P}(x, y)logP(y|x)\<br>= \sum_{x, y}\tilde{P}(x, y)\sum_{i=1}^nw_if_i(x, y) - \sum_{x, y}\tilde{P}(x,y)logZ_w(x)\<br>= \sum_{x, y}\tilde{P}(x, y)\sum_{i=1}^nw_if_i(x, y) - \sum_{x}\tilde{P}(y)logZ_w(x)<br>$$</p>
+<p>其对偶函数与其相等。所以，最大熵模型学习中的对偶函数极大化等价于最大熵模型的极大似然估计。</p>
+<p>所以最大熵模型的学习问题就变成了具体求解对数似然函数极大化或者对偶函数极大化的问题。</p>
+<h2 id="模型学习的最优化算法"><a href="#模型学习的最优化算法" class="headerlink" title="模型学习的最优化算法"></a>模型学习的最优化算法</h2><p>Logistic回归模型和最大熵模型学习通常以迭代算法进行求解似然函数的最优化问题</p>
+<h3 id="改进的迭代尺度法"><a href="#改进的迭代尺度法" class="headerlink" title="改进的迭代尺度法"></a>改进的迭代尺度法</h3><p>改进的迭代尺度法(improved iterative scaling, IIS)</p>
+<p>已知最大熵模型为:</p>
+<p>$$<br>P_w(y|x) = \frac{1}{Z_w(x)}exp(\sum_{i=1}^nw_if_i(x,y))<br>$$</p>
+<p>其中</p>
+<p>$$<br>Z_w(x) = \sum_yexp(\sum_{i=1}^nw_if_i(x, y))<br>$$</p>
+<p>对数似然函数为:</p>
+<p>$$<br>L(w) = \sum_{x,y}\tilde{P}(x,y)\sum_{i=1}^nw_if_i(x,y) - \sum_x\tilde{P}(x)logZ_w(x)<br>$$</p>
+<p>IIS的想法是:假设最大熵模型当前的参数向量是$w=(w_1,w_2,\cdots,w_n)^T$,希望找到一个新的参数向量$w+\delta=(w_1+\delta_1,w_2+\delta_2,\cdots,w_n+\delta_n)^T$能使模型的对数似然函数值增大，如果有这样一种参数向量更新方法，则就可以一直重复使用。直到找到最大值。</p>
+<p>（公式推到实在太多。。。贴图）</p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514214072/1\_flsour.png" alt=""></p>
+<p><img src="http://res.cloudinary.com/kimjin7486/image/upload/v1514214074/1514214056073\_miivcn.jpg" alt=""></p>
+<hr>
+<p>IIS</p>
+<p>输入: 特征函数$f_1,f_2,\cdots,f_w$;经验分布$\tilde{P}(X, Y)$,模型$P_w(y|x)$</p>
+<p>输出：最优参数值$w_i^*$,最优模型$P_w$</p>
+<ol>
+<li>对所有$i\in{1,2,\cdots,n}$,取初值$w_i=0$</li>
+<li><p>对每一$i\in{1,2,\cdots,n}$</p>
+<ol>
+<li><p>令$\delta_i$是方程</p>
+<p>$$<br>\sum_{x,y}\tilde{P}(x)P(y|x)f_i(x,y)exp(\delta_if^(x, y) = \sum_{i=1}^nf_i(x, y)<br>$$</p>
+</li>
+<li><p>更新$w_i$的值: $w_i \leftarrow w_i + \delta_i$</p>
+</li>
+</ol>
+</li>
+<li><p>如果不是所有$w_i$都收敛，重复步骤2</p>
+</li>
+</ol>
+<hr>
+<h3 id="拟牛顿法"><a href="#拟牛顿法" class="headerlink" title="拟牛顿法"></a>拟牛顿法</h3><hr>
+<p>BFGS算法</p>
+<p>输入：特征函数$f_1,f_2,\cdots,f_n$，经验分布$\tilde{P}(x, y)$，目标函数$f(w)$,梯度$g(w)=\nabla f(w)$, 精度要求$\epsilon$</p>
+<p>输出：最优参数值$w^<em>$, 最优模型$P_{w^</em>}(y|x)$</p>
+<ol>
+<li>选定初始点$w^*$,取$B_0$为正定对称矩阵，置k=0</li>
+<li>计算$g_k=g(w^{(k)})$，若$||g_k||&lt;\epsilon$，则停止计算，得到$w^*=w^{(k)}$,否则转3</li>
+<li>由$B_kp_k=-g_k$求出$p_k$</li>
+<li>一维搜索：求$\lambda_k$使得$f(w^{(k)}+\lambda_kp_k)=min_{\lambda\ge 0}f(w^{(k)}+\lambda p_k)$</li>
+<li>置$w^{(k+1)}=w^{(k)}+\lambda_kp_k$</li>
+<li>计算$g_{k+1}=g(w^{(k+1)})$,若$||g_{k+1}||&lt;\epsilon$，则停止计算，得到$w^*=w^{(k+1)}$,否则根据下式求出$B_{k+1}$:</li>
+</ol>
+<p>$$<br>B_{k+1}=B_k+\frac{y_ky_k^T}{y_k^T\delta_k} - \frac{B_k\delta_k\delta_k^TB_k}{\delta_k^TB_k\delta_k}<br>$$</p>
+<p>其中$y_k=g_{k+1} - g_k,\delta_k=w^{(k+1)} - w^{(k)}$</p>
+<p>7.置k=k+1,转步骤3</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/统计学习方法/" rel="tag"># 统计学习方法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/25/2017-12-25-decision-tree/" rel="next" title="决策树">
+                <i class="fa fa-chevron-left"></i> 决策树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="嘿喵" />
+            
+              <p class="site-author-name" itemprop="name">嘿喵</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/KimJin77" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Logistic回归模型"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Logistic&#x56DE;&#x5F52;&#x6A21;&#x578B;" class="headerlink" title="Logistic&#x56DE;&#x5F52;&#x6A21;&#x578B;"></a>Logistic&#x56DE;&#x5F52;&#x6A21;&#x578B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Logistic分布"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#Logistic&#x5206;&#x5E03;" class="headerlink" title="Logistic&#x5206;&#x5E03;"></a>Logistic&#x5206;&#x5E03;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二项Logistic回归模型"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x9879;Logistic&#x56DE;&#x5F52;&#x6A21;&#x578B;" class="headerlink" title="&#x4E8C;&#x9879;Logistic&#x56DE;&#x5F52;&#x6A21;&#x578B;"></a>&#x4E8C;&#x9879;Logistic&#x56DE;&#x5F52;&#x6A21;&#x578B;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多项Logistic回归"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x591A;&#x9879;Logistic&#x56DE;&#x5F52;" class="headerlink" title="&#x591A;&#x9879;Logistic&#x56DE;&#x5F52;"></a>&#x591A;&#x9879;Logistic&#x56DE;&#x5F52;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大熵模型"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;" class="headerlink" title="&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;"></a>&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最大熵原理"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x6700;&#x5927;&#x71B5;&#x539F;&#x7406;" class="headerlink" title="&#x6700;&#x5927;&#x71B5;&#x539F;&#x7406;"></a>&#x6700;&#x5927;&#x71B5;&#x539F;&#x7406;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大熵模型的定义"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;&#x7684;&#x5B9A;&#x4E49;" class="headerlink" title="&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;&#x7684;&#x5B9A;&#x4E49;"></a>&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;&#x7684;&#x5B9A;&#x4E49;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大熵模型学习"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;&#x5B66;&#x4E60;" class="headerlink" title="&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;&#x5B66;&#x4E60;"></a>&#x6700;&#x5927;&#x71B5;&#x6A21;&#x578B;&#x5B66;&#x4E60;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#极大似然估计"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x6781;&#x5927;&#x4F3C;&#x7136;&#x4F30;&#x8BA1;" class="headerlink" title="&#x6781;&#x5927;&#x4F3C;&#x7136;&#x4F30;&#x8BA1;"></a>&#x6781;&#x5927;&#x4F3C;&#x7136;&#x4F30;&#x8BA1;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型学习的最优化算法"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x6A21;&#x578B;&#x5B66;&#x4E60;&#x7684;&#x6700;&#x4F18;&#x5316;&#x7B97;&#x6CD5;" class="headerlink" title="&#x6A21;&#x578B;&#x5B66;&#x4E60;&#x7684;&#x6700;&#x4F18;&#x5316;&#x7B97;&#x6CD5;"></a>&#x6A21;&#x578B;&#x5B66;&#x4E60;&#x7684;&#x6700;&#x4F18;&#x5316;&#x7B97;&#x6CD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#改进的迭代尺度法"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x6539;&#x8FDB;&#x7684;&#x8FED;&#x4EE3;&#x5C3A;&#x5EA6;&#x6CD5;" class="headerlink" title="&#x6539;&#x8FDB;&#x7684;&#x8FED;&#x4EE3;&#x5C3A;&#x5EA6;&#x6CD5;"></a>&#x6539;&#x8FDB;&#x7684;&#x8FED;&#x4EE3;&#x5C3A;&#x5EA6;&#x6CD5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拟牛顿法"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x62DF;&#x725B;&#x987F;&#x6CD5;" class="headerlink" title="&#x62DF;&#x725B;&#x987F;&#x6CD5;"></a>&#x62DF;&#x725B;&#x987F;&#x6CD5;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘿喵</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
