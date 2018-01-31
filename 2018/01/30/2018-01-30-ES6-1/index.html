@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="嘿喵喵喵喵">
 <meta property="og:description" content="let 和 const 命令 let 声明的变量只在它所在的代码块有效  1234567891011121314151617// 注意使用 let 和 var 的区别// let 声明的变量 i，出了 for 块以后，就不存在了。for (let i = 0; i &amp;lt; 10; i++) &amp;#123;    // ...&amp;#125;console.log(i); // ReferenceErr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-30T09:40:19.000Z">
+<meta property="og:updated_time" content="2018-01-30T09:41:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ES6(1)">
 <meta name="twitter:description" content="let 和 const 命令 let 声明的变量只在它所在的代码块有效  1234567891011121314151617// 注意使用 let 和 var 的区别// let 声明的变量 i，出了 for 块以后，就不存在了。for (let i = 0; i &amp;lt; 10; i++) &amp;#123;    // ...&amp;#125;console.log(i); // ReferenceErr">
@@ -346,8 +346,10 @@
 <li><p><code>let</code> 声明的变量只在它所在的代码块有效</p>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注意使用 let 和 var 的区别</span></span><br><span class="line"><span class="comment">// let 声明的变量 i，出了 for 块以后，就不存在了。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(i); <span class="comment">// ReferenceError: i is not defined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// var 声明的变量 i，在 for 块之外能存在，记录了最后的值</span></span><br><span class="line"><span class="comment">// 因为 var 声明的变量在全局范围都有效</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(i); <span class="comment">//10</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>for</code> 循环设置循环变量的那部分与循环体内部的作用域是独立的。</p>
-</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li><code>for</code> 循环设置循环变量的那部分与循环体内部的作用域是独立的。</li>
 <li><p><code>var</code> 声明的变量会发生“变量提升”现象，即变量可以在声明之前使用，此时变量的值为 <code>undefined</code>. <code>let</code> 命令要求变量一定要在声明之后才可以使用。</p>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(foo); <span class="keyword">var</span> foo = <span class="number">2</span>; <span class="comment">// undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(bar); <span class="keyword">let</span> foo = <span class="number">2</span>; <span class="comment">// ReferenceError: bar is not defined</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -559,6 +561,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/01/31/2018-01-31-Swifter-Tips/" rel="prev" title="Swift 开发者必备 Tips 读书笔记">
+                Swift 开发者必备 Tips 读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -636,7 +642,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -658,7 +664,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
